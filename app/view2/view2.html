@@ -1,5 +1,43 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+<form name="CitiForm" ng-submit="requestCity()" >
+    <div class="row">
+        <div class="medium-6 columns">
+            <label>Enter City Name
+                <input list='citiesList' required ng-model="location.name" type='text' placeholder="Individual or Organization" autocomplete />
+                <datalist id="citiesList" name="citiesList">
+                    <option></option>
+                    <option ng-repeat="item in cities" value="{{ item.name }}, {{ item.country }}">{{ item.name }}</option>
+                </datalist>
+            </label>
+        </div>
+        <div class="small-12 column">
+            <input type="submit" name="Send" class="button">
+        </div>
+    </div>
+</form>
+<div>
+    <p>Your latitude is: <strong>{{ position.coords.latitude || position.data.coord.lat }}</strong> and longitude is: <strong>{{ position.coords.longitude || position.data.coord.lon }}</strong>
+    </p>
+    <div class="row">
+        <div class="medium-6 columns">
+            Location: {{ position.data.name }}
+            <br> Country Code: {{ position.data.sys.country}}
+            <br> position: {{ position.data.weather[0].description }}
+            <br> Wind: Travelling at {{ position.data.wind.speed }} speed at {{ position.data.wind.deg }} degrees
+        </div>
+        <div class="medium-6 columns">
+            Ground Level: {{ position.data.main.grnd_level }}
+            <br> Humidity: {{ position.data.main.humidity }}
+            <br> Pressure: {{ position.data.main.pressure }}
+            <br> Sea Level: {{ position.data.main.sea_level }}
+            <br> Temp: {{ position.main.data.temp }}
+            <br> Max Temperature: {{ position.data.main.temp_max }}
+            <br> Min Temperature: {{ position.data.main.temp_min }}
+        </div>
+        <div class="small-12 columns">
+            <hr>
+            <ng-map ng-if="positionReady" center="{{ position.coords.latitude }}, {{ position.coords.longitude }}">
+                <marker position="[{{ position.coords.latitude }}, {{ position.coords.longitude }}]" title="My location" animation="Animation.BOUNCE"></marker>
+            </ng-map>
+        </div>
+    </div>
+</div>
